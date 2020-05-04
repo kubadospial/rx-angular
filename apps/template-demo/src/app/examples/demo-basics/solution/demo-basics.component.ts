@@ -1,19 +1,22 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { interval } from 'rxjs';
+import { interval, Subject } from 'rxjs';
+import { scan } from 'rxjs/operators';
 
 @Component({
   selector: 'demo-basics',
   template: `
-    i$: {{ i$ | push }}
-    <ng-container *rxLet="i$; let i">
+    <button (click)="isVisibleSubject.next()">Toggle</button>
+    i$: {{ isVisible$ | push }}
+    <ng-container *rxLet="isVisible$; let i">
       {{ i }}
     </ng-container>
-    <ng-container *rxIf="i$; let i">
+    <ng-container *rxIf="isVisible$; let i">
       {{ i }}
     </ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DemoBasicsComponent {
-  i$ = interval(200);
+  isVisibleSubject = new Subject<boolean>();
+  isVisible$ = this.isVisibleSubject.pipe(scan(b => !b));
 }

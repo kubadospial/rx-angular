@@ -263,23 +263,17 @@ export class RxIf<T = unknown> implements OnDestroy {
   updateObserver: Observer<T | null | undefined> = {
     next: (value: T | null | undefined) => {
       // to have init lazy
-      if (!this.embeddedView) {
-        this.createEmbeddedView();
-      }
-      this.viewContext.$implicit = value;
-      this.viewContext.rxIf = value;
+      this._updateNextContext(value);
     },
     error: (error: Error) => {
       // to have init lazy
-      if (!this.embeddedView) {
-        this.createEmbeddedView();
-      }
+      this._updateErrorContext(error);
       this.viewContext.$error = true;
     },
     complete: () => {
       // to have init lazy
       if (!this.embeddedView) {
-        this.createEmbeddedView();
+        this._updateCompleteContext();
       }
       this.viewContext.$complete = true;
     }
@@ -303,7 +297,29 @@ export class RxIf<T = unknown> implements OnDestroy {
     return true;
   }
 
-  private _updateView() {
+  private _resetContext(): void {
+    this.viewContext.rxIf = undefined;
+    this.viewContext.$implicit = undefined;
+    this.viewContext.$error = false;
+    this.viewContext.$complete = false;
+  }
+  private _updateNextContext(value: T): void {
+    this._resetContext();
+    this.viewContext.rxIf = value;
+    this.viewContext.$implicit = value;
+  }
+  private _updateErrorContext(error: Error): void {
+    this._resetContext();
+    this.viewContext.$error = true;
+  }
+  private _updateCompleteContext(): void {
+    this.viewContext.rxIf = undefined;
+    this.viewContext.$implicit = undefined;
+    this.viewContext.$error = false;
+    this.viewContext.$complete = true;
+  }
+
+  private _updateView(): void {
     if (this._context.$implicit) {
       if (!this._thenViewRef) {
         this._viewContainer.clear();
@@ -329,16 +345,9 @@ export class RxIf<T = unknown> implements OnDestroy {
     }
   }
 
-  createEmbeddedView() {
-    this.embeddedView = this.viewContainerRef.createEmbeddedView(
-      this.templateRef,
-      this.ViewContext
-    );
-  }
-
   ngOnDestroy() {
     this.subscription.unsubscribe();
-    this.viewContainerRef.clear();
+    this._viewContainer.clear();
   }
 }
 
