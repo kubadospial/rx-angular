@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { interval, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { scan } from 'rxjs/operators';
 
 @Component({
-  selector: 'demo-basics',
+  selector: 'solution-rx-if-1',
   template: `
     <button (click)="isVisibleSubject.next()">Toggle</button>
     i$: {{ isVisible$ | push }}
@@ -16,7 +16,7 @@ import { scan } from 'rxjs/operators';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DemoBasicsComponent {
+export class StartRxIf01Component {
   isVisibleSubject = new Subject<boolean>();
   isVisible$ = this.isVisibleSubject.pipe(scan(b => !b));
 }

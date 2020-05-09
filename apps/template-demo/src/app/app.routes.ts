@@ -3,14 +3,12 @@ import { Routes } from '@angular/router';
 export const ROUTES: Routes = [
   {
     path: '',
-    redirectTo: 'demo-basics',
+    redirectTo: 'rx-if',
     pathMatch: 'full'
   },
   {
-    path: 'demo-basics',
+    path: 'rx-if',
     loadChildren: () =>
-      import('./examples/demo-basics/demo-basics.module').then(
-        m => m.DemoBasicsModule
-      )
+      import('./examples/rx-if/rx-if01.module').then(m => m.RxIf01Module)
   }
 ];
