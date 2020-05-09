@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { MENU_ITEMS } from './rx-if.menu';
+import { MENU_ITEMS } from './rx-let.menu';
 
 @Component({
-  selector: 'rx-if-container',
+  selector: 'rx-let-container',
   template: `
-    <h1>RxIf</h1>
+    <h1>RxLet</h1>
     <a mat-button *ngFor="let item of items" [routerLink]="[item.link]">
       {{ item.label }}
     </a>
@@ -13,6 +13,6 @@ import { MENU_ITEMS } from './rx-if.menu';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RxIfContainerComponent {
+export class RxLetContainerComponent {
   items = MENU_ITEMS;
 }
