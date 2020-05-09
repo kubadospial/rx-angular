@@ -9,6 +9,6 @@ export const ROUTES: Routes = [
   {
     path: 'rx-if',
     loadChildren: () =>
-      import('./examples/rx-if/rx-if01.module').then(m => m.RxIf01Module)
+      import('./examples/rx-if/rx-if.module').then(m => m.RxIfModule)
   }
 ];

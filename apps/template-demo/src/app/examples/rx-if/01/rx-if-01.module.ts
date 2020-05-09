@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { TemplateModule } from '@rx-angular/template';
 import { StartRxIf01Component } from './start.rx-if01.component';
 import { SolutionRxIf01Component } from './solution-rx-if01.component';
-import { ROUTES } from '../rx-if.routes';
+import { ROUTES } from './rx-if-01.routes';
 
 const DECLARATIONS = [SolutionRxIf01Component, StartRxIf01Component];
 export const materialModules = [];
@@ -19,4 +19,4 @@ export const materialModules = [];
   ],
   exports: [DECLARATIONS]
 })
-export class RxIfModule {}
+export class RxIf01Module {}

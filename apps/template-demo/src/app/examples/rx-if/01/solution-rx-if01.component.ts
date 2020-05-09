@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { scan } from 'rxjs/operators';
 
 @Component({
-  selector: 'rx-if-1',
+  selector: 'rx-if-01',
   template: `
     <button (click)="isVisibleSubject.next()">Toggle</button>
     i$: {{ isVisible$ | push }}

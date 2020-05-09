@@ -1,22 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { RxIfComponent } from './01/rx-if.component';
 import { RxIfContainerComponent } from './rx-if.container.component';
 import { TemplateModule } from '@rx-angular/template';
+import { ROUTES } from './rx-if.routes';
 
-export const ROUTES = [
-  {
-    path: '',
-    pathMatch: 'full',
-    component: RxIfContainerComponent
-  },
-  {
-    path: 'solution',
-    component: RxIfContainerComponent
-  }
-];
-const DECLARATIONS = [RxIfComponent, RxIfContainerComponent];
+const DECLARATIONS = [RxIfContainerComponent];
 export const materialModules = [];
 
 @NgModule({
@@ -29,4 +18,4 @@ export const materialModules = [];
   ],
   exports: [DECLARATIONS]
 })
-export class RxIf01Module {}
+export class RxIfModule {}

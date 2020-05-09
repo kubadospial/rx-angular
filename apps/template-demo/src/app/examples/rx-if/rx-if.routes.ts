@@ -7,7 +7,8 @@ export const ROUTES = [
     children: [
       {
         path: 'rx-if-01',
-        loadChildren: () => import('./rx-if01.module').then(m => m.RxIf01Module)
+        loadChildren: () =>
+          import('./01/rx-if-01.module').then(m => m.RxIf01Module)
       }
     ]
   }

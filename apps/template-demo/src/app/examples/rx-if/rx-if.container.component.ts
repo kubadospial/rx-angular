@@ -1,23 +1,18 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { MENU_ITEMS } from './rx-if.menu';
 
 @Component({
   selector: 'rx-if-container',
   template: `
-    <h1>Solution</h1>
-    <rxIf> </rxIf>
+    <h1>RrxIf</h1>
+    <a mat-button *ngFor="let item of items" [routerLink]="[item.link]">
+      {{ item.label }}
+    </a>
+    <br />
+    <router-outlet></router-outlet>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RxIfContainerComponent {
-  refreshIntervalInput$ = new Subject<Event>();
-  refreshInterval$ = this.refreshIntervalInput$.pipe(
-    map((e: any) => e.target.value)
-  );
-
-  numRenders = 0;
-  rerenders(): number {
-    return ++this.numRenders;
-  }
+  items = MENU_ITEMS;
 }

@@ -9,9 +9,10 @@
   >
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <h3 matSubheader>Tutorials</h3>
-      <a mat-list-item [routerLink]="['rx-if']">Demo Basics</a>
-      <a mat-list-item [routerLink]="['rx-if/solution']">Solution</a>
+      <!-- -->
+      <a mat-list-item *ngFor="let item of vm.items" [routerLink]="[item.link]">
+        {{ item.label }}
+      </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
