@@ -1,6 +1,7 @@
 import {
   ChangeDetectorRef,
   Directive,
+  EmbeddedViewRef,
   Input,
   OnDestroy,
   TemplateRef,
@@ -14,7 +15,13 @@ import {
   Observer,
   Unsubscribable
 } from 'rxjs';
-import { RenderAware, createRenderAware, getStrategies } from '../core';
+import {
+  assertTemplate,
+  createRenderAware,
+  getStrategies,
+  RenderAware
+} from '../core';
+import { RxIfContext } from '../if';
 
 export interface RxLetContext<T = unknown> {
   // to enable `let` syntax we have to use $implicit (var; let v = var)
@@ -25,6 +32,59 @@ export interface RxLetContext<T = unknown> {
   $error?: boolean;
   // set context var complete to true (var$; let c = $complete)
   $complete?: boolean;
+}
+
+class ReactiveContext<T> {
+  initialized: boolean;
+  error: Error;
+  complete: boolean;
+  value: T;
+}
+
+function getInitial() {
+  return {
+    initialized: false,
+    error: undefined,
+    complete: false,
+    value: undefined
+  };
+}
+interface TemplateManager<T> {
+  upsertTemplateRef(name: string, templateRef: TemplateRef<T>): void;
+  getEmbeddedView(name: string): EmbeddedViewRef<T>;
+  updateContext(newContext: T): void;
+}
+
+function createTemplateManager<T>(): TemplateManager<T> {
+  let context: ReactiveContext<T> = getInitial();
+  const templateRefs: {
+    [name: string]: TemplateRef<any>;
+  } = {};
+
+  const viewRefs: {
+    [name: string]: EmbeddedViewRef<any>;
+  } = {};
+
+  return {
+    updateContext,
+    upsertTemplateRef,
+    getEmbeddedView
+  };
+
+  function updateContext(newContext: T): void {
+    context = { ...context, ...newContext };
+  }
+
+  function upsertTemplateRef(name: string, templateRef: TemplateRef<T>) {
+    this.viewRefs[name] = this._viewContainer.createEmbeddedView(
+      templateRefs[name],
+      this._context
+    );
+  }
+
+  function getEmbeddedView(name: string): EmbeddedViewRef<T> {
+    return viewRefs[name];
+  }
 }
 
 /**
@@ -97,9 +157,11 @@ export interface RxLetContext<T = unknown> {
  * @publicApi
  */
 @Directive({ selector: '[rxLet]' })
-export class RxLet<U> implements OnDestroy {
-  @Input()
-  set rxLet(potentialObservable: ObservableInput<U> | null | undefined) {
+export class RxLet<T> implements OnDestroy {
+  @Input('rxLet')
+  set potentialObservable(
+    potentialObservable: ObservableInput<T> | null | undefined
+  ) {
     this.renderAware.nextPotentialObservable(potentialObservable);
   }
 
@@ -110,13 +172,18 @@ export class RxLet<U> implements OnDestroy {
     }
   }
 
+  @Input('rxLetInitial')
+  set initialTemplateRef(templateRef: TemplateRef<T> | null) {
+    this.viewManager.upsertTemplateRef('initial', templateRef);
+  }
+
   constructor(
     cdRef: ChangeDetectorRef,
-    private readonly templateRef: TemplateRef<RxLetContext<U>>,
+    private readonly templateRef: TemplateRef<RxLetContext<T>>,
     private readonly viewContainerRef: ViewContainerRef
   ) {
-    this.renderAware = createRenderAware<U>({
-      strategies: getStrategies<U>({ cdRef }),
+    this.renderAware = createRenderAware<T>({
+      strategies: getStrategies<T>({ cdRef }),
       resetObserver: this.resetObserver,
       updateObserver: this.updateObserver
     });
@@ -124,8 +191,10 @@ export class RxLet<U> implements OnDestroy {
   }
 
   static ngTemplateGuard_rxLet: 'binding';
+
+  viewManager = createTemplateManager<T>();
   private embeddedView: any;
-  private readonly ViewContext: RxLetContext<U | undefined | null> = {
+  private readonly viewContext: RxLetContext<T | undefined | null> = {
     $implicit: undefined,
     rxLet: undefined,
     $error: false,
@@ -133,40 +202,40 @@ export class RxLet<U> implements OnDestroy {
   };
 
   protected readonly subscription: Unsubscribable;
-  private readonly renderAware: RenderAware<U | null | undefined>;
+  private readonly renderAware: RenderAware<T | null | undefined>;
   private readonly resetObserver: NextObserver<void> = {
     next: () => {
       // if not initialized no need to set undefined
       if (this.embeddedView) {
-        this.ViewContext.$implicit = undefined;
-        this.ViewContext.rxLet = undefined;
-        this.ViewContext.$error = false;
-        this.ViewContext.$complete = false;
+        this.viewContext.$implicit = undefined;
+        this.viewContext.rxLet = undefined;
+        this.viewContext.$error = false;
+        this.viewContext.$complete = false;
       }
     }
   };
-  private readonly updateObserver: Observer<U | null | undefined> = {
-    next: (value: U | null | undefined) => {
+  private readonly updateObserver: Observer<T | null | undefined> = {
+    next: (value: T | null | undefined) => {
       // to have init lazy
       if (!this.embeddedView) {
         this.createEmbeddedView();
       }
-      this.ViewContext.$implicit = value;
-      this.ViewContext.rxLet = value;
+      this.viewContext.$implicit = value;
+      this.viewContext.rxLet = value;
     },
     error: (error: Error) => {
       // to have init lazy
       if (!this.embeddedView) {
         this.createEmbeddedView();
       }
-      this.ViewContext.$error = true;
+      this.viewContext.$error = true;
     },
     complete: () => {
       // to have init lazy
       if (!this.embeddedView) {
         this.createEmbeddedView();
       }
-      this.ViewContext.$complete = true;
+      this.viewContext.$complete = true;
     }
   };
 
@@ -180,7 +249,7 @@ export class RxLet<U> implements OnDestroy {
   createEmbeddedView() {
     this.embeddedView = this.viewContainerRef.createEmbeddedView(
       this.templateRef,
-      this.ViewContext
+      this.viewContext
     );
   }
 

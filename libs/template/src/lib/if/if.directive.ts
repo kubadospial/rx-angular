@@ -13,8 +13,7 @@ import {
   Input,
   OnDestroy,
   TemplateRef,
-  ViewContainerRef,
-  ɵstringify as stringify
+  ViewContainerRef
 } from '@angular/core';
 import {
   NextObserver,
@@ -25,6 +24,7 @@ import {
 } from 'rxjs';
 import { createRenderAware, getStrategies, RenderAware } from '../core';
 import { RxViewContext } from '../core/render-aware/render-aware.interface';
+import { assertTemplate } from '../core/utils/assert-template-ref';
 
 /**
  * @publicApi
@@ -348,21 +348,5 @@ export class RxIf<T = unknown> implements OnDestroy {
   ngOnDestroy() {
     this.subscription.unsubscribe();
     this._viewContainer.clear();
-  }
-}
-
-function assertTemplate(
-  property: string,
-  templateRef: TemplateRef<any> | null
-): void {
-  const isTemplateRefOrNull = !!(
-    !templateRef || templateRef.createEmbeddedView
-  );
-  if (!isTemplateRefOrNull) {
-    throw new Error(
-      `${property} must be a TemplateRef, but received '${stringify(
-        templateRef
-      )}'.`
-    );
   }
 }
