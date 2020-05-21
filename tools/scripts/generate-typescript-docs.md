@@ -8,12 +8,12 @@ The configuration docs are generated from the TypeScript source files by running
 yarn generate-typescript-docs [-w]
 ```
 
-**Currently only the [state library](./libs/state/src) will get imported**
+**Currently only the [state library](../../../../libs/state/src) will get imported**
 
 This script uses the TypeScript compiler API to traverse the server source code and extract data about the types as well as other information such as descriptions and default values.
 
 Currently, any `interface`, `class` or `type` which includes the JSDoc `@docCategory` tag will be extracted into a markdown file in
-the [apps/docs/generated](./apps/docs/generated) directory. Those files then will be rendered by the _upcoming_ `docs app`.
+the [apps/docs/generated](../../../../apps/docs/generated) directory. Those files then will be rendered by the _upcoming_ `docs app`.
 
 ## Docs-specific JSDoc tags
 

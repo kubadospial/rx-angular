@@ -25,7 +25,7 @@
     "update": "ng update @nrwl/workspace",
     "workspace-schematic": "nx workspace-schematic",
     "dep-graph": "nx dep-graph",
-    "generate-typescript-docs": "ts-node -P tools/tsconfig.tools.json tools/scripts/docs/generate-typescript-docs.ts",
+    "generate-typescript-docs": "ts-node -P tools/tsconfig.tools.json tools/scripts/generate-typescript-docs.ts",
     "help": "nx help",
     "state:publish": "nx test state && nx build state --prod && cd ./dist/libs/state && npm publish",
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points"
@@ -57,6 +57,7 @@
     "@nrwl/node": "^9.2.2",
     "angular-in-memory-web-api": "^0.10.0",
     "core-js": "^3.6.5",
+    "inquirer": "^7.1.0",
     "rxjs": "^6.5.5",
     "tslib": "^1.11.1",
     "zone.js": "^0.10.3"

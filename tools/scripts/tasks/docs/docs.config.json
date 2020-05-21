@@ -1,0 +1,11 @@
+{
+  "sections": [
+    {
+      "sourceDirs": [
+        "libs/state/src/"
+      ],
+      "exclude": [],
+      "outputPath": "generated"
+    }
+  ]
+}

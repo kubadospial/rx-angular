@@ -3,9 +3,7 @@ import * as path from 'path';
 import * as ts from 'typescript';
 
 import {
-  ClassInfo,
   DocsPage,
-  InterfaceInfo,
   MemberInfo,
   MethodInfo,
   MethodParameterInfo,
@@ -277,8 +275,8 @@ export class TypescriptDocsParser {
         const name = member.name
           ? member.name.getText()
           : ts.isIndexSignatureDeclaration(member)
-          ? '[index]'
-          : 'constructor';
+            ? '[index]'
+            : 'constructor';
         let description = '';
         let type = '';
         let defaultValue = '';

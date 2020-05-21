@@ -1,10 +1,5 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
-
-function assertNever(value: never): never {
-  throw new Error(`Expected never, got ${typeof value}`);
-}
-
 import { generateFrontMatter } from './docgen-utils';
 import {
   ClassInfo,
@@ -18,6 +13,10 @@ import {
   TypeMap,
   VariableInfo
 } from './typescript-docgen-types';
+
+function assertNever(value: never): never {
+  throw new Error(`Expected never, got ${typeof value}`);
+}
 
 /**
  * THX TO @michaelbromley
@@ -335,10 +334,10 @@ export class TypescriptDocsRenderer {
         type = this.renderType(member.type, knownTypeMap, docsUrl);
         defaultParam = member.defaultValue
           ? `default="${this.renderType(
-              member.defaultValue,
-              knownTypeMap,
-              docsUrl
-            )}" `
+            member.defaultValue,
+            knownTypeMap,
+            docsUrl
+          )}" `
           : '';
       } else {
         const args = member.parameters
