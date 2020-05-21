@@ -47,9 +47,8 @@ export function generateTypescriptDocs(
     if (generatedCount) {
       console.log(
         `Generated ${generatedCount} typescript api docs for "${outputPath}" in ${+new Date() -
-        timeStart}ms`
+          timeStart}ms`
       );
     }
   }
 }
-

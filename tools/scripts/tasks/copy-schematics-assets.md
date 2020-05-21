@@ -1,12 +1,14 @@
 # copySchematicsAssets
 
 ## Description
+
 This task takes care about copying all related files related to a schematic,
 tat are not compiled by TypeScript to the dist folder.
 
-## Usage 
+## Usage
 
 `copySchematicsAssets` takes 3 arguments:
+
 - source {string} - The source folder
 - folder {string} - The folder in which schematics life
 - destination {string} - The path/to/file.json to merge in.
@@ -16,16 +18,17 @@ tat are not compiled by TypeScript to the dist folder.
 Following workspace structure is assumed:
 
 **Root structure**
+
 ```
 root
 │   ...
 │   angular.json
-│   package.json    
+│   package.json
 │
 └───apps
 │   └───app-one
 │   └───app-two
-│   └───app-three   
+│   └───app-three
 └───libs
     └───lib-one
     └───lib-two
@@ -35,6 +38,7 @@ root
 Following project details are assumed:
 
 **lib-one structure**
+
 ```
 libs
 └───lib-one
@@ -81,7 +85,7 @@ libs
 │                      __name@camelize__.component.ts
 │                      __name@camelize__.component.spec.ts
 │                      ...
-│                      
+│
 └───...
 ```
 
@@ -95,16 +99,17 @@ The function internally copies files matching following glob patterns:
 
 ```typescript
 [
-    // files for generate commands
-    path.join(libsFolderStruct, '*/files/**/**.*'),
-    // cli info files
-    path.join(libsFolderStruct, '**/index.md')
-]
+  // files for generate commands
+  path.join(libsFolderStruct, '*/files/**/**.*'),
+  // cli info files
+  path.join(libsFolderStruct, '**/index.md')
+];
 ```
 
 The resulting dist folder looks like following:
 
 **Build output in dist structure**
+
 ```
 libs
 └───lib-one
@@ -127,6 +132,6 @@ libs
 │                      __name@camelize__.component.html
 │                      __name@camelize__.component.ts
 │                      __name@camelize__.component.spec.ts
-│                      ...          
+│                      ...
 └───...
 ```

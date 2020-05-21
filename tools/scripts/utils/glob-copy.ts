@@ -4,10 +4,10 @@ import { map } from 'rxjs/operators';
 import * as path from 'path';
 
 export interface GlobCopyResult {
-  source: string,
-  patterns: string[],
-  destination: string,
-  numberOfFiles: number
+  source: string;
+  patterns: string[];
+  destination: string;
+  numberOfFiles: number;
 }
 
 /**

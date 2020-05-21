@@ -27,8 +27,6 @@ export async function getConfig(path: string) {
     })
   };
 
-
-
   const questions = [
     {
       type: 'input',
@@ -57,32 +55,26 @@ export async function getConfig(path: string) {
       filter: Number,
       default: 3,
     },*/
-  ].filter((q) => configOverride[q.name] === undefined);
+  ].filter(q => configOverride[q.name] === undefined);
   const questions$ = new BehaviorSubject(questions[0]);
 
-  questions$.next(
-    {
-      type: 'input',
-      name: 'exclude',
-      message: 'What are the excluded directories?'
-    }
-  )
-  return inquirer.prompt(questions$).ui.process.pipe(
-    tap(
-      (res) => {
-        // console.log('RES', res);
-
-      },
-      () => {
-
-      },
-      () => {
-
-      }
+  questions$.next({
+    type: 'input',
+    name: 'exclude',
+    message: 'What are the excluded directories?'
+  });
+  return inquirer
+    .prompt(questions$)
+    .ui.process.pipe(
+      tap(
+        res => {
+          // console.log('RES', res);
+        },
+        () => {},
+        () => {}
+      )
     )
-  ).toPromise()
-
-
+    .toPromise();
 
   /*
   return inquirer.prompt(questions).then(async (answers) => {

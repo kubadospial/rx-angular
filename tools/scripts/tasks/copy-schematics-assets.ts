@@ -2,7 +2,11 @@ import { Observable, throwError } from 'rxjs';
 import { globCopy, GlobCopyResult } from '../utils/glob-copy';
 import * as path from 'path';
 
-export function copySchematicsAssets(source: string, folder:string, destination: string): Observable<GlobCopyResult> {
+export function copySchematicsAssets(
+  source: string,
+  folder: string,
+  destination: string
+): Observable<GlobCopyResult> {
   if (!source || !destination) {
     return throwError('Params source and destination required.');
   }

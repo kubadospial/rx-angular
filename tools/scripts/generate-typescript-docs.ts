@@ -7,7 +7,6 @@ import { generateTypescriptDocs } from './tasks/docs/generate-docs';
  * copied from here: https://github.com/vendure-ecommerce/vendure/blob/8592e9d80427f08ff7454cd9106c07f15aa765d0/scripts/docs/generate-typescript-docs.ts#L1
  */
 
-
 generateTypescriptDocs(sections);
 
 const watchMode = !!process.argv.find(arg => arg === '--watch' || arg === '-w');
@@ -24,4 +23,3 @@ if (watchMode) {
     });
   });
 }
-

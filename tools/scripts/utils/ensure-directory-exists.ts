@@ -1,4 +1,4 @@
-import * as path from "path";
+import * as path from 'path';
 import { existsSync, mkdirSync } from 'fs';
 
 export function ensureDirectoryExists(filePath) {

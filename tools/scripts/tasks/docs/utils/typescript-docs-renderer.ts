@@ -334,10 +334,10 @@ export class TypescriptDocsRenderer {
         type = this.renderType(member.type, knownTypeMap, docsUrl);
         defaultParam = member.defaultValue
           ? `default="${this.renderType(
-            member.defaultValue,
-            knownTypeMap,
-            docsUrl
-          )}" `
+              member.defaultValue,
+              knownTypeMap,
+              docsUrl
+            )}" `
           : '';
       } else {
         const args = member.parameters

@@ -1,4 +1,4 @@
-import path from "path";
+import path from 'path';
 import * as klawSync from 'klaw-sync';
 
 export function toHash(title: string): string {
