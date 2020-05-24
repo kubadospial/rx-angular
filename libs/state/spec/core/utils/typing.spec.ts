@@ -10,15 +10,12 @@ import { from, of } from 'rxjs';
 
 describe('isPromiseGuard', () => {
   it('should return true for a Promise', () => {
-    expect(isPromiseGuard(new Promise(() => {
-    }))).toBeTruthy();
-    expect(isPromiseGuard({
-      then: () => {
-      }
-    })).toBeTruthy();
+    expect(isPromiseGuard(new Promise(() => {}))).toBeTruthy();
+    expect(isPromiseGuard({ then: () => {} })).toBeTruthy();
   });
 
   it('should return false for no Promise', () => {
+    expect(isPromiseGuard(undefined)).toBeFalsy();
     expect(isPromiseGuard(true)).toBeFalsy();
     expect(isPromiseGuard({ then: true })).toBeFalsy();
   });
@@ -91,7 +88,7 @@ describe('isKeyOf', () => {
     expect(isKeyOf<{[Symbol.iterator]: number}>(Symbol.iterator)).toBeTruthy();
   });
 
-  it('should return false for no Promise', () => {
+  it('should return false for non existing key or non objects', () => {
     expect(isKeyOf(true)).toBeFalsy();
     expect(isKeyOf([])).toBeFalsy();
     expect(isKeyOf({})).toBeFalsy();
