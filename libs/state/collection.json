@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "ng-add": {
+      "description": "Installs and sets up the @rx-angular/state library",
+      "factory": "./schematics/ng-add/index#ngAdd",
+      "schema": "./schematics/ng-add/schema.json"
+    }
+  }
+}

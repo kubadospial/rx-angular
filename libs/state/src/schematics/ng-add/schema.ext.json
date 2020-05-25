@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "title": "RxAngular State - Reactive Component State Management",
+  "$id": "rx-angular/state:ng-add",
+  "description": "Adds @rx-angular/state to your project.",
+  "type": "object",
+  "properties": {
+    "skipPackageJson": {
+      "description": "When true, does not add dependencies to the \"package.json\" file.",
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": []
+}

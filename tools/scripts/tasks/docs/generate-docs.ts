@@ -10,7 +10,6 @@ export interface DocsSectionConfig {
   outputPath: string;
 }
 
-
 /**
  * Uses the TypeScript compiler API to parse the given files and extract out the documentation
  * into markdown files
