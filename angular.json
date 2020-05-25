@@ -310,9 +310,7 @@
             "tsConfig": "libs/state/tsconfig.schematics.json",
             "packageJson": "libs/state/package.json",
             "main": "libs/state/src/index.ts",
-            "assets": [
-              "libs/state/collection.json"
-            ]
+            "assets": ["libs/state/collection.json"]
           }
         }
       },
