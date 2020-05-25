@@ -4,6 +4,13 @@ import { absOutputPath, getSourceFilePaths, toHash } from '../../utils/draft';
 import { TypescriptDocsParser } from './utils/typescript-docs-parser';
 import { TypescriptDocsRenderer } from './utils/typescript-docs-renderer';
 
+export interface DocsSectionConfig {
+  sourceDirs: string[];
+  exclude?: RegExp[];
+  outputPath: string;
+}
+
+
 /**
  * Uses the TypeScript compiler API to parse the given files and extract out the documentation
  * into markdown files

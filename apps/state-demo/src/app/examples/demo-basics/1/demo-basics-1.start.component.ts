@@ -10,8 +10,9 @@ import {
   ListServerItem,
   ListService
 } from '../../../data-access/list-resource';
-import { interval, Subject, Subscription } from 'rxjs';
+import { interval, of, Subject, Subscription } from 'rxjs';
 import { map, startWith, tap } from 'rxjs/operators';
+import { RxState } from '@rx-angular/state';
 
 export interface DemoBasicsItem {
   id: string;
@@ -97,7 +98,8 @@ const initComponentState = {
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DemoBasicsComponent1Start implements OnInit, OnDestroy {
+export class DemoBasicsComponent1Start extends RxState<ComponentState>
+  implements OnInit, OnDestroy {
   intervalSubscription = new Subscription();
   listExpandedChanges = new Subject<boolean>();
   storeList$ = this.listService.list$.pipe(
@@ -118,7 +120,19 @@ export class DemoBasicsComponent1Start implements OnInit, OnDestroy {
   @Output()
   listExpandedChange = this.listExpandedChanges;
 
-  constructor(private listService: ListService) {}
+  constructor(private listService: ListService) {
+    super();
+
+    this.set(s => {
+      console.log('set', s, this.get().refreshInterval);
+      return { ...s, refreshInterval: 1 };
+    });
+
+    this.connect(of(2, 3, 4), (s, v) => {
+      console.log('connect', s, v, this.get().refreshInterval);
+      return { ...s, refreshInterval: v };
+    });
+  }
 
   ngOnDestroy(): void {
     this.intervalSubscription.unsubscribe();
