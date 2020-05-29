@@ -305,7 +305,6 @@
         "schematics": {
           "builder": "@nrwl/node:package",
           "options": {
-            "deleteOutputPath": false,
             "outputPath": "dist/libs/state",
             "tsConfig": "libs/state/tsconfig.schematics.json",
             "packageJson": "libs/state/package.json",

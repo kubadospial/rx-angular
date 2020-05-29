@@ -3,5 +3,6 @@
   "dest": "../../dist/libs/state",
   "lib": {
     "entryFile": "src/index.ts"
-  }
+  },
+  "deleteDestPath": false
 }

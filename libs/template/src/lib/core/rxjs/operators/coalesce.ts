@@ -5,12 +5,12 @@ import {
   SubscribableOrPromise,
   Subscriber,
   Subscription,
-  TeardownLogic
+  TeardownLogic,
 } from 'rxjs';
 import {
   InnerSubscriber,
   OuterSubscriber,
-  subscribeToResult
+  subscribeToResult,
 } from 'rxjs/internal-compatibility';
 import { createPropertiesWeakMap } from '../../utils';
 
@@ -27,14 +27,14 @@ interface CoalescingContextProps {
 const coalescingContextPropertiesMap = createPropertiesWeakMap<
   object,
   CoalescingContextProps
->(ctx => ({
-  isCoalescing: false
+>((ctx) => ({
+  isCoalescing: false,
 }));
 
 const defaultCoalesceConfig: CoalesceConfig = {
   leading: false,
   trailing: true,
-  context: undefined
+  context: undefined,
 };
 
 function getCoalesceConfig(
@@ -42,7 +42,7 @@ function getCoalesceConfig(
 ): CoalesceConfig {
   return {
     ...defaultCoalesceConfig,
-    ...config
+    ...config,
   };
 }
 
@@ -137,18 +137,18 @@ class CoalesceSubscriber<T, R> extends OuterSubscriber<T, R> {
     const { _hasValue, _sendValue, _leading } = this;
     if (_hasValue) {
       if (_leading) {
-        this.destination.next(_sendValue);
+        this.destination.next(_sendValue as T);
         this._hasValue = false;
         this._sendValue = null;
       }
-      this.startCoalesceDuration(_sendValue);
+      this.startCoalesceDuration(_sendValue as T);
     }
   }
 
   private exhaustLastValue() {
     const { _hasValue, _sendValue } = this;
     if (_hasValue) {
-      this.destination.next(_sendValue);
+      this.destination.next(_sendValue as T);
       this._hasValue = false;
       this._sendValue = null;
     }
@@ -159,7 +159,7 @@ class CoalesceSubscriber<T, R> extends OuterSubscriber<T, R> {
     if (!!duration) {
       this.add((this._coalesced = subscribeToResult(this, duration)));
       coalescingContextPropertiesMap.setProps(this._context, {
-        isCoalescing: true
+        isCoalescing: true,
       });
     }
   }
@@ -176,7 +176,7 @@ class CoalesceSubscriber<T, R> extends OuterSubscriber<T, R> {
         this.exhaustLastValue();
       }
       coalescingContextPropertiesMap.setProps(this._context, {
-        isCoalescing: false
+        isCoalescing: false,
       });
     }
   }
