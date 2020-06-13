@@ -82,6 +82,55 @@ export class RxState<T extends object> implements OnDestroy, Subscribable<T> {
     this.accumulator.nextAccumulator(accumulatorFn);
   }
 
+  selector(...args: string[]) {
+    return {
+      set: (value: string) => {
+        let state: Partial<T> = this.accumulator.state;
+        state = this._recursiveDiver(value, state, ...args);
+        this.accumulator.nextSlice(state);
+        return;
+      }
+    };
+  }
+
+  private _recursiveDiver<V>(
+    value: string,
+    obj: { [index: string]: any },
+    ...args: string[]
+  ): any {
+    const arg: string = args[0];
+
+    if (!obj[arg]) {
+      obj[arg] = args.length === 1 ? value : {};
+    }
+
+    if (obj[arg]?.constructor === Object) {
+      args.shift();
+      return {
+        ...obj,
+        [arg]: this._recursiveDiver(value, obj[arg], ...args)
+      };
+    }
+
+    if (obj[arg]?.constructor === String) {
+      return {
+        ...obj,
+        [arg]: value
+      };
+    }
+  }
+
+  private _prepareDraftObject(value: string, ...args: string[]): Partial<T> {
+    const reversedArgs = args.reverse();
+    let obj = {};
+    for (let i = 0; i < args.length; i++) {
+      obj = {
+        [reversedArgs[i]]: i === 0 ? value : { ...obj }
+      };
+    }
+    return obj;
+  }
+
   /**
    * @description
    * Read from the state in imperative manner. Returns the state object in its current state.
@@ -218,6 +267,8 @@ export class RxState<T extends object> implements OnDestroy, Subscribable<T> {
    * // every 250ms the property timer will get updated
    */
   connect<K extends keyof T>(key: K, slice$: Observable<T[K]>): void;
+  connect<V>(key: any, slice$: Observable<V>): void;
+
   /**
    *
    * @description
